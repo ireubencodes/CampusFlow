@@ -1,28 +1,62 @@
-# CampusFlow Baseline Check
+# CampusFlow Baseline and Final Verification
 
-## Automated tests
-- Command: `python -m unittest discover -s tests -v`
-- Result: 46 tests passed.
+## 1. Original baseline
 
-## Manual checks
-- Ran `python main.py` successfully.
-- High urgency with 9 affected users produced high priority.
-- High urgency with 10 affected users produced critical priority.
-- High urgency with 2 affected users produced high priority.
-- Medium urgency with 2 affected users produced medium priority.
-- The application saved ticket records in `tickets.json`.
-- Ticket IDs continued from T001 through T005 in the observed data.
+The original baseline was recorded before the new features were integrated.
 
-## Initial observations
-- Local runtime data should not be committed to the repository.
-- Existing ticket fields include ID, title, category, urgency, affected users,
-  priority, status, and assignee.
-- Ticket notes are implemented as a list of strings and covered by tests.
-- Notes survive JSON save/load round trips.
-- Mentor audit feedback: pending confirmation; not recorded yet.
+- Test command: `python -m unittest discover -s tests -v`
+- Original result: 46 tests passed.
+- The original application supported ticket creation, priority calculation,
+  assignment, status tracking, and JSON persistence.
 
-## Next steps
-- Confirm remaining assignment requirements and mentor feedback.
-- Integrate the ticket-note CLI commands with Engineer B's work.
-- Complete the remaining tests and documentation.
-- Review the combined changes before opening pull requests.
+## 2. Integrated project verification
+
+After integrating the changes on `main`, the complete test suite was run.
+
+- Branch: `main`
+- Test command: `python -m unittest discover -s tests -v`
+- Verified result: 82 tests passed, 0 failures, 0 errors.
+- Verification covered ticket validation, workflow rules, notes, JSON storage,
+  search, reports, and the Engineering Understanding Check.
+
+## 3. Automated test coverage
+
+Tests cover:
+
+- Ticket title, category, urgency, and affected-user validation.
+- Priority calculation and numeric ticket-ID ordering.
+- Assignment and status-transition rules.
+- Open-ticket queue filtering and ordering.
+- Adding notes, rejecting invalid notes, and preserving note order.
+- Saving and loading tickets and notes, including ID continuity.
+- Rejecting malformed JSON and invalid ticket collections.
+- Case-insensitive title search and combined filters.
+- Reports for empty collections, ticket counts, and resolution percentages.
+- Quiz question structure, answer validation, scoring, and explanations.
+
+## 4. Runtime data
+
+Runtime ticket data should not be committed as demonstration data unless
+explicitly required. The application uses JSON persistence. Tests cover
+save/load round trips, malformed data, and protection against invalid data.
+
+## 5. Remaining submission checks
+
+- Complete the AI-learning log using real evidence from both engineers.
+- Perform a final CLI demonstration.
+- Record the repository URL, final main commit SHA, and both pull-request URLs.
+- Confirm the required peer-review evidence and honestly document any gaps.
+
+## 6. Pull-request and review evidence
+
+The following pull requests are confirmed merged:
+
+- Ticket validation and notes: https://github.com/ireubencodes/CampusFlow/pull/6
+- Search, reports, and CLI integration: https://github.com/ireubencodes/CampusFlow/pull/7
+- README update: https://github.com/ireubencodes/CampusFlow/pull/8
+- Engineering Understanding Check: https://github.com/ireubencodes/CampusFlow/pull/9
+
+Process note: the Engineering Understanding Check PR was merged before the
+planned peer-review comments were submitted. Do not treat this as evidence of
+pre-merge peer review or approval. Any review performed afterward should be
+recorded as post-merge review, with its actual date, findings, and follow-up.
