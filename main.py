@@ -54,9 +54,16 @@ def create_new_ticket(tickets):
         ticket = create_ticket(
             tickets, title, category, urgency, affected_users
         )
-        save_tickets(tickets)
+
+        tickets.append(ticket)
+        try:
+            save_tickets(tickets)
+        except (OSError, ValueError, TypeError):
+            tickets.remove(ticket)
+            raise
+
         print(f"Ticket created. ID: {ticket['id']}")
-    except (ValueError, TypeError) as error:
+    except (ValueError, TypeError, OSError) as error:
         print(f"Could not create ticket: {error}")
 
 
@@ -71,7 +78,7 @@ def assign_existing_ticket(tickets):
         assign_ticket(ticket, assignee)
         save_tickets(tickets)
         print("Ticket assigned successfully.")
-    except (ValueError, TypeError) as error:
+    except (ValueError, TypeError, OSError) as error:
         print(f"Could not assign ticket: {error}")
 
 
@@ -86,7 +93,7 @@ def change_ticket_status(tickets):
         update_ticket_status(ticket, status)
         save_tickets(tickets)
         print("Status updated successfully.")
-    except (ValueError, TypeError) as error:
+    except (ValueError, TypeError, OSError) as error:
         print(f"Could not update status: {error}")
 
 
@@ -103,7 +110,7 @@ def add_ticket_note(tickets):
         add_note(ticket_id, author, message, tickets)
         save_tickets(tickets)
         print("Note added successfully.")
-    except (ValueError, TypeError) as error:
+    except (ValueError, TypeError, OSError) as error:
         print(f"Could not add note: {error}")
 
 
@@ -133,15 +140,18 @@ def search_and_filter(tickets):
     status = input("Status filter (Enter to skip): ").strip()
     priority = input("Priority filter (Enter to skip): ").strip()
 
-    results = search_tickets(
-        tickets,
-        title=title,
-        category=category,
-        status=status,
-        priority=priority,
-    )
-    display_tickets(results)
-    print(f"Matching tickets: {len(results)}")
+    try:
+        results = search_tickets(
+            tickets,
+            title=title,
+            category=category,
+            status=status,
+            priority=priority,
+        )
+        display_tickets(results)
+        print(f"Matching tickets: {len(results)}")
+    except (ValueError, TypeError) as error:
+        print(f"Search failed: {error}")
 
 
 def show_report(tickets):
@@ -219,7 +229,7 @@ def main():
                 break
             else:
                 print("Invalid option. Choose 0 to 10.")
-        except (ValueError, TypeError, KeyError) as error:
+        except (ValueError, TypeError, KeyError, OSError) as error:
             print(f"Operation failed: {error}")
 
 
